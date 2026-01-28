@@ -161,14 +161,16 @@ body {
 .project-item:hover, .project-item.active-item { opacity: 0.5; transform: translateX(10px); }
 
 .project-image-container {
-  width: 100%;  border: 0px solid var(--text); /* borde invisible para mantener tamaño */
+  width: 100%; height: auto; border: 0px solid var(--text); /* borde invisible para mantener tamaño */
   overflow: hidden; opacity: 0; transition: opacity 0.5s ease;
   background: rgba(255,255,255,0.05); 
   margin-bottom: 10px; /* ESPACIO REDUCIDO ENTRE IMAGEN Y TEXTO */
+  max-width: 400px;
+  max-height: 265px;
 }
 #project-img { 
     width: 100%; height: 100%; 
-    object-fit: contain; display: block;
+    object-fit: cover; display: block;
     background-color: var(--bg);
 }
 
