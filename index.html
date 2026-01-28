@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sebastián Sánchez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body data-theme="dark">
+
+    <canvas id="bg-particles"></canvas>
+    <canvas id="cursor-canvas"></canvas>
+
+    <div class="theme-selector">
+        <label class="square-radio">
+            <input type="radio" name="theme" value="dark" checked>
+            <span class="checkmark"></span> DARK
+        </label>
+        <label class="square-radio" style="margin-right: 10px; padding: 10px;">
+            <input type="radio" name="theme" value="light">
+            <span class="checkmark"></span> LIGHT
+        </label>
+
+        <span class="lang-btn" data-lang="es"
+            style="cursor:pointer; font-size: 0.65rem; margin-right: 1px; margin-top: 10px">ES</span>
+        <span style="font-size: 0.65rem; opacity: 0.5; margin-top: 10px">/</span>
+        <span class="lang-btn active" data-lang="en"
+            style="cursor:pointer; font-size: 0.65rem; margin-left: 1px; margin-top: 10px">EN</span>
+    </div>
+
+    <div class="stage-wrapper">
+        <main class="stage">
+            <div class="top-right-clock">
+                <span id="city">Madrid</span> - <span id="time">00:00:00</span>
+            </div>
+
+            <section class="intro">
+                <h1 class="name-title">Sebastián Sánchez</h1>
+                <p class="subtitle" data-i18n="subtitle">Web Developer</p>
+                <div class="menu-column">
+                    <button class="menu-btn active" data-section="home" data-i18n="menu_home">Home</button>
+                    <button class="menu-btn" data-section="projects" data-i18n="menu_projects">Projects</button>
+                    <button class="menu-btn" data-section="info" data-i18n="menu_info">Info</button>
+                    <button class="menu-btn" data-section="contact" data-i18n="menu_contact">Contact</button>
+                </div>
+            </section>
+
+            <div class="panels-container">
+
+                <section class="panel-lateral home-panel active" id="home-panel">
+                    <p data-i18n="home_text"></p>
+                </section>
+
+                <section class="panel-lateral info-panel" id="info-panel">
+                    <div class="scroll-area">
+                        <p data-i18n="info_text"></p>
+                    </div>
+                </section>
+
+                <section class="panel-lateral contact-panel" id="contact-panel">
+                    <p>smsebastian@outlook.com</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Sm-Sebas" target="_blank">GitHub</a> ·
+                        <a href="https://www.linkedin.com/in/sebastián-sánchez-martínez-178b31349/"
+                            target="_blank">LinkedIn</a> ·
+                        <a href="./assets/CV/Sebastian_CV.pdf" download>CV</a>
+                    </div>
+                </section>
+
+                <section id="project-view" class="project-view">
+                    <div class="project-list-side">
+                        <ul id="project-list">
+                            <li data-project="p1" class="project-item"><span class="p-num">01.</span> Weather & Activity
+                            </li>
+                            <li data-project="p2" class="project-item"><span class="p-num">02.</span> Atelier Digitale
+                            </li>
+                            <li data-project="p3" class="project-item"><span class="p-num">03.</span> Ticketing System
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="project-detail-side">
+                        <div class="project-image-container">
+                            <img id="project-img" src="" alt="Project Preview">
+                        </div>
+                        <div class="project-info-text">
+                            <h2 id="project-title"></h2>
+                            <p id="project-desc"></p>
+                            <p id="project-tech"
+                                style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px;">
+                            </p>
+                            <a id="project-github" href="#" target="_blank"
+                                style="display: none; color: var(--text); text-decoration: none; margin-top: 15px;">
+                                View on GitHub
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div class="footer-left"><span>© Sebastián Sánchez</span></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // OBJETO DE TRADUCCIONES
+        const translations = {
+            es: {
+                subtitle: "Desarrollador Web",
+                menu_home: "Inicio",
+                menu_projects: "Proyectos",
+                menu_info: "Información",
+                menu_contact: "Contacto",
+                home_text: "Hola, soy Sebastián Sánchez, desarrollador web full-stack apasionado por crear experiencias digitales elegantes y funcionales.<br><br>Me especializo en combinar diseño intuitivo con tecnología eficiente, desarrollando sitios y aplicaciones modernas que aporten valor.",
+                info_text: "<strong>Habilidades y Tecnologías:</strong><br><br>- Frontend: HTML5, CSS3, JavaScript<br>- Backend: PHP, Java<br>- Bases de Datos: SQL, PL/SQL, Oracle Database<br>- Otros: XML, WordPress, VS Code<br>- Diseño: UI, Responsive, SEO<br><br><strong>Fortalezas Personales:</strong><br><br>- Atención al detalle<br>- Resolución de problemas<br>- Aprendizaje constante<br>- Trabajo en equipo<br>- Motivación y proactividad",
+
+                // Textos Proyectos
+                p1_title: "Weather & Activity Planner",
+                p1_desc: "Aplicación meteorológica que recomienda actividades basadas en el clima local mediante el consumo de APIs externas.",
+                p1_tech: "React · OpenWeather API · CSS Modules",
+                p1_link: "https://github.com/Sm-Sebas/weather-app",
+
+                p2_title: "Minimalist E-Commerce Studio",
+                p2_desc: "Tienda digital con enfoque en diseño limpio, gestión de carrito en tiempo real y filtrado dinámico de productos.",
+                p2_tech: "Vue.js · JavaScript ES6 · GSAP Animations",
+                p2_link: "https://github.com/Sm-Sebas/ecommerce-vue",
+
+                p3_title: "Sistema de Tickets Soporte IT",
+                p3_desc: "Plataforma de gestión de incidencias con roles de usuario, base de datos relacional y reportes automatizados.",
+                p3_tech: "Java · PHP · Oracle SQL · PL/SQL",
+                p3_link: "https://github.com/Sm-Sebas/ticketing",
+
+                git_text: "Ver en GitHub"
+            },
+            en: {
+                subtitle: "Web Developer",
+                menu_home: "Home",
+                menu_projects: "Projects",
+                menu_info: "Info",
+                menu_contact: "Contact",
+                home_text: "Hello, I'm Sebastián Sánchez, a full-stack web developer passionate about creating elegant and functional digital experiences.<br><br>I specialise in combining intuitive design with efficient technology, developing modern websites and applications that add value.",
+                info_text: "<strong>Skills and Technologies:</strong><br><br>- Frontend: HTML5, CSS3, JavaScript<br>- Backend: PHP, Java<br>- Databases: SQL, PL/SQL, Oracle Database<br>- Others: XML, WordPress, VS Code<br>- Design: UI, Responsive, SEO<br><br><strong>Personal Strengths:</strong><br><br>- Attention to detail<br>- Problem solving<br>- Continuous learning<br>- Teamwork<br>- Motivation and proactivity",
+
+                // Project Texts
+                p1_title: "Weather & Activity Planner",
+                p1_desc: "Weather application that recommends activities based on local climate by consuming external APIs.",
+                p1_tech: "React · OpenWeather API · CSS Modules",
+                p1_link: "https://github.com/Sm-Sebas/weather-app",
+
+                p2_title: "ATELIER",
+                p2_desc: "Plataforma de e-commerce curada para artistas digitales. Un enfoque minimalista que prioriza la obra visual mediante un sistema de grids brutalistas y una interfaz de alta costura digital.",
+                p2_tech: "Stack: Next.js, Sanity CMS, Stripe",
+                p2_link: "https://github.com/Sm-Sebas/ecommerce-vue",
+
+                p3_title: "IT Support Ticketing System",
+                p3_desc: "Issue management platform featuring user roles, relational database, and automated reporting.",
+                p3_tech: "Java · PHP · Oracle SQL · PL/SQL",
+                p3_link: "https://github.com/Sm-Sebas/ticketing",
+
+                git_text: "View on GitHub"
+            }
+        };
+
+        // Función global de traducción inicial
+        function updateTexts(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            // Si hay un proyecto activo, actualizar sus textos también
+            const activeItem = document.querySelector('.project-item.active-item');
+            if (activeItem) activeItem.click();
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateTexts(lang);
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => updateTexts('en'));
+    </script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

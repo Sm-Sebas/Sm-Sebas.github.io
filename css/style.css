@@ -1,0 +1,287 @@
+/* =========================================
+   1. VARIABLES Y RESET
+   ========================================= */
+:root {
+  --bg: #000000;
+  --text: #eaeaea;
+  --muted: #777;
+  --marco-width: 96%; 
+  --marco-height: 90vh;
+  --ls: -0.04em;
+}
+
+[data-theme="light"] {
+  --bg: #969696;
+  --text: #111;
+  --muted: #666;
+}
+
+* { 
+  margin: 0; padding: 0; box-sizing: border-box; 
+  letter-spacing: var(--ls);
+}
+
+html, body {
+  height: 100vh; width: 100vw;
+  overflow: hidden; position: fixed;
+  background: var(--bg); color: var(--text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* =========================================
+   2. ESTRUCTURA (STAGE)
+   ========================================= */
+.stage-wrapper {
+  position: relative;
+  width: var(--marco-width);
+  height: var(--marco-height);
+  padding: 60px;
+  border: 1px solid var(--text); 
+  display: flex; z-index: 10;
+  transition: border-color 0.4s ease;
+}
+
+.stage {
+  display: flex; width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* UI Fija */
+.footer-left {
+  position: absolute; bottom: calc((100vh - var(--marco-height)) / 2 - 25px);
+  left: calc((100vw - var(--marco-width)) / 2);
+  font-size: 0.75rem; color: var(--muted); z-index: 20;
+}
+
+.theme-selector {
+  position: absolute; top: calc((100vh - var(--marco-height)) / 2 - 35px);
+  right: calc((100vw - var(--marco-width)) / 2);
+  display: flex; gap: 20px; font-size: 0.65rem; z-index: 20;
+}
+
+.top-right-clock {
+  position: absolute; top: -30px; right: 0;
+  font-size: 0.75rem; font-weight: 300; letter-spacing: 0em;
+}
+
+/* =========================================
+   3. IZQUIERDA: INTRO Y MENÚ
+   ========================================= */
+.intro { z-index: 25; position: relative; }
+
+.name-title { 
+  font-size: clamp(2.5rem, 5vw, 3.5rem); 
+  font-weight: 400; line-height: 0.9; 
+  margin-bottom: 5px; 
+}
+
+.subtitle { 
+  font-size: 0.85rem; color: var(--muted); 
+  font-weight: 300; letter-spacing: -0.01em;
+}
+
+.menu-column { display: flex; flex-direction: column; gap: 12px; margin-top: 50px; }
+
+.menu-btn {
+  background: none; border: none; color: var(--text);
+  font-family: 'Inter', sans-serif; 
+  font-size: 0.9rem; font-weight: 500; 
+  cursor: pointer; text-align: left; transition: 0.3s; 
+  position: relative; padding-left: 15px; letter-spacing: -0.02em;
+}
+
+.menu-btn.active::before {
+  content: ""; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%); width: 6px; height: 6px;
+  background-color: var(--text); border-radius: 50%;
+}
+
+/* =========================================
+   4. DERECHA: PANELES
+   ========================================= */
+.panels-container { flex: 1; position: relative; height: 100%; }
+
+.panel-lateral:not(.project-view) {
+    position: absolute; top: 50%; right: 0;
+    transform: translateY(-50%); width: 100%;
+    max-width: 320px; display: none;
+    flex-direction: column; opacity: 0; z-index: 5;
+}
+
+.panel-lateral.active { display: flex !important; opacity: 1 !important; }
+
+/* ESTILO BASE INFO - REFERENCIA */
+.panel-lateral p { 
+  font-size: 0.9rem; line-height: 1.4; font-weight: 400; letter-spacing: -0.01em;
+}
+
+.social-links { margin-top: 10px; display: flex; gap: 15px; }
+.social-links a { 
+  color: var(--text); text-decoration: none; 
+  font-weight: 700; font-size: 0.9rem; 
+  border-bottom: 1px solid transparent; transition: 0.3s; 
+}
+.social-links a:hover { opacity: 0.6; border-bottom: 1px solid var(--text); }
+
+/* =========================================
+   5. VISTA PROYECTOS
+   ========================================= */
+.project-view {
+    position: absolute; top: 50%; right: 0;
+    transform: translateY(-50%); width: 100%;
+    display: none; opacity: 0; z-index: 5;
+    justify-content: center;
+}
+
+@media (min-width: 1025px) {
+    .project-view.active {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 50px;
+    }
+    .project-list-side { flex: 0 0 auto; width: 45%; margin-left: 10vw;}
+    .project-detail-side { flex: 1; max-width: 400px; }
+}
+
+.project-item {
+  font-size: clamp(2rem, 2.5vw, 3rem); 
+  cursor: pointer; margin-bottom: 20px;
+  transition: all 0.4s ease; display: flex; align-items: baseline; gap: 15px;
+}
+.project-item:hover, .project-item.active-item { opacity: 0.5; transform: translateX(10px); }
+
+.project-image-container {
+  width: 100%;  border: 0px solid var(--text); /* borde invisible para mantener tamaño */
+  overflow: hidden; opacity: 0; transition: opacity 0.5s ease;
+  background: rgba(255,255,255,0.05); 
+  margin-bottom: 10px; /* ESPACIO REDUCIDO ENTRE IMAGEN Y TEXTO */
+}
+#project-img { 
+    width: 100%; height: 100%; 
+    object-fit: contain; display: block;
+    background-color: var(--bg);
+}
+
+/* CONTENEDOR DE TEXTO DEL PROYECTO */
+.project-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* ESPACIO ENTRE LINEAS IGUAL QUE INFO */
+}
+
+/* SINCRONIZACIÓN TOTAL CON ESTILO INFO */
+#project-title {
+    font-size: 0.9rem; /* MISMO TAMAÑO QUE INFO */
+    font-weight: 600;   /* UN PELIN MÁS NEGRITA PARA DIFERENCIAR */
+    line-height: 1.4;
+    margin: 0;
+}
+
+#project-desc, #project-tech {
+    font-size: 0.9rem; /* MISMO TAMAÑO QUE INFO */
+    line-height: 1.4; /* MISMO INTERLINEADO QUE INFO */
+    font-weight: 400; /* MISMO PESO QUE INFO */
+    margin: 0;
+}
+
+#project-github {
+    font-size: 0.9rem; /* MISMO TAMAÑO QUE INFO */
+    font-weight: 700; /* MISMO PESO QUE SOCIAL LINKS */
+    text-decoration: none !important;
+    border-bottom: none !important;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    align-self: flex-start;
+}
+
+#project-github:hover { opacity: 1; text-decoration: none !important; }
+
+/* =========================================
+   6. RESPONSIVE MÓVIL Y TABLET
+   ========================================= */
+@media (max-width: 1024px) {
+  html, body { overflow-y: auto; position: relative; height: auto; }
+  body { display: block; padding: 20px 0; }
+  
+  .stage-wrapper { 
+    width: 92%; height: auto; min-height: 80vh; 
+    margin: 60px auto 40px; padding: 30px 20px; 
+  }
+  
+  .stage { flex-direction: column; gap: 40px; align-items: center; }
+
+  .theme-selector {
+    position: absolute; 
+    top: calc((100vh - var(--marco-height)) / 2 - 35px);
+    right: calc((100vw - var(--marco-width)) / 2);
+    display: flex; gap: 20px; 
+  }
+  .top-right-clock { position: absolute; top: -30px; right: 0; }
+
+  .menu-column { flex-direction: row; flex-wrap: wrap; gap: 15px; margin-top: 30px; justify-content: center; }
+
+  .panel-lateral:not(.project-view), 
+  .project-view {
+    position: relative !important; top: 0 !important;
+    transform: none !important; width: 100% !important;
+    max-width: 100% !important; margin-top: 40px;
+  }
+  
+  .project-view.active { 
+      display: flex !important; 
+      flex-direction: column !important; 
+      align-items: center !important;
+      gap: 30px; 
+  }
+  
+  .project-list-side { width: 100% !important; margin: 0 !important; text-align: center; }
+  
+  .project-detail-side { 
+      width: 100% !important; 
+      max-width: 550px !important; 
+      margin: 0 auto !important; 
+      text-align: center; 
+  }
+
+  .project-info-text { align-items: center; }
+  .project-item { justify-content: center; }
+  
+  .project-image-container {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 10;
+      margin: 0 auto 10px auto; /* ESPACIO REDUCIDO */
+  }
+
+  #project-github { align-self: center; }
+}
+
+/* Estilo para el enlace cuando está deshabilitado */
+#project-github.disabled {
+    color: var(--muted) !important; /* El color del footer/muted */
+    cursor: default;               /* Quita la mano del cursor */
+    pointer-events: none;          /* Evita que se pueda hacer click */
+    border-bottom: none !important; /* Asegura que no haya subrayado */
+    font-weight: 400;              /* Menos peso visual */
+    opacity: 0.7;
+}
+
+
+/* Canvas y extras */
+#bg-particles, #cursor-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+.square-radio { display: flex; align-items: center; cursor: pointer; padding: 10px; font-size: 0.65rem; }
+.square-radio input { display: none; }
+.checkmark { height: 10px; width: 10px; border: 1px solid var(--text); margin-right: 8px; }
+.square-radio input:checked ~ .checkmark { background: var(--text); }
+.lang-btn { opacity: 0.6; transition: opacity 0.3s; }
+.lang-btn.active { opacity: 1; font-weight: 600; }
