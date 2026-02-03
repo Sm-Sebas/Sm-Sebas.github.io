@@ -9,7 +9,7 @@ const projectTitle = document.getElementById("project-title");
 const projectDesc = document.getElementById("project-desc");
 const projectTech = document.getElementById("project-tech");
 const projectImg = document.getElementById("project-img");
-const projectGithub = document.getElementById("project-github");
+const projectLink = document.getElementById("project-link"); // Corregido ID
 const imgContainer = document.querySelector(".project-image-container");
 
 // MAPA DE IMÁGENES
@@ -23,12 +23,14 @@ function init() {
     body.dataset.theme = state.theme;
     const themeInput = document.querySelector(`input[value="${state.theme}"]`);
     if (themeInput) themeInput.checked = true;
+    
     updateClock();
     setInterval(updateClock, 1000);
     initParticles();
     animateParticles();
     animateCursor();
     
+    // Autoclick en el primer proyecto al cargar
     if(projectItems.length > 0) {
         setTimeout(() => {
              projectItems[0].click(); 
@@ -63,7 +65,7 @@ menuButtons.forEach(btn => {
     };
 });
 
-// SELECCIÓN DE PROYECTO (CON LÓGICA DE TIENDA TERMINADA)
+// SELECCIÓN DE PROYECTO
 projectItems.forEach(item => {
     item.onclick = () => {
         projectItems.forEach(i => i.classList.remove("active-item"));
@@ -72,40 +74,47 @@ projectItems.forEach(item => {
         const id = item.dataset.project;
         const currentLang = document.querySelector('.lang-btn.active').dataset.lang;
         
-        gsap.to([projectTitle, projectDesc, projectTech, projectGithub, imgContainer], { 
-            opacity: 0, y: 10, duration: 0.3, 
+        // Animación de salida antes de cambiar contenido
+        gsap.to([projectTitle, projectDesc, projectTech, projectLink, imgContainer], { 
+            opacity: 0, y: 10, duration: 0.2, 
             onComplete: () => {
-                // Actualizar imagen
+                // 1. Actualizar imagen
                 if (projectImg) projectImg.src = projectImages[id];
                 
-                // Actualizar textos básicos
-                projectTitle.textContent = translations[currentLang][id + '_title'];
-                projectDesc.innerHTML = translations[currentLang][id + '_desc']; // Usamos innerHTML por si tienes <br>
-                projectTech.textContent = translations[currentLang][id + '_tech'];
-                
-                // Lógica del Botón / Link
-                if (projectGithub) {
-                    if (id === "p2") {
-                        // CASO PROYECTO 2 (TIENDA TERMINADA)
-                        projectGithub.textContent = currentLang === 'es' ? "Visitar Tienda →" : "Visit Shop →";
-                        projectGithub.href = translations[currentLang][id + '_link'];
-                        projectGithub.classList.remove("disabled");
-                        projectGithub.style.opacity = "1";
-                        projectGithub.style.pointerEvents = "auto";
-                    } else {
-                        // CASO OTROS PROYECTOS (EN PROGRESO)
-                        projectGithub.textContent = currentLang === 'es' ? "[ En proceso ]" : "[ In progress ]";
-                        projectGithub.href = "#";
-                        projectGithub.classList.add("disabled");
-                        projectGithub.style.opacity = "0.5";
-                        projectGithub.style.pointerEvents = "none";
+                // 2. Actualizar textos (vienen del objeto translations en el HTML)
+                if (typeof translations !== 'undefined') {
+                    projectTitle.textContent = translations[currentLang][id + '_title'];
+                    projectDesc.innerHTML = translations[currentLang][id + '_desc'];
+                    projectTech.textContent = translations[currentLang][id + '_tech'];
+                    
+                    // 3. Lógica del Botón / Link
+                    if (projectLink) {
+                        const url = translations[currentLang][id + '_link'];
+                        
+                        if (id === "p2") {
+                            // PROYECTO 2: ARCHIVE ATELIER
+                            projectLink.textContent = currentLang === 'es' ? "Visitar Tienda →" : "Visit Shop →";
+                            projectLink.href = url;
+                            projectLink.classList.remove("disabled");
+                            projectLink.style.opacity = "1";
+                            projectLink.style.pointerEvents = "auto";
+                            projectLink.style.display = "inline-block";
+                        } else {
+                            // OTROS PROYECTOS: EN PROCESO
+                            projectLink.textContent = currentLang === 'es' ? "[ En proceso ]" : "[ In progress ]";
+                            projectLink.href = "#";
+                            projectLink.classList.add("disabled");
+                            projectLink.style.opacity = "0.5";
+                            projectLink.style.pointerEvents = "none";
+                            projectLink.style.display = "inline-block";
+                        }
                     }
-                    projectGithub.style.display = "inline-block";
                 }
 
+                // Animación de entrada
                 imgContainer.style.opacity = "1";
-                gsap.to([projectTitle, projectDesc, projectTech, projectGithub, imgContainer], { 
-                    opacity: 1, y: 0, duration: 0.4 
+                gsap.to([projectTitle, projectDesc, projectTech, projectLink, imgContainer], { 
+                    opacity: 1, y: 0, duration: 0.4, stagger: 0.05
                 });
             }
         });
@@ -129,10 +138,11 @@ document.querySelectorAll(".theme-selector input").forEach(input => {
     };
 });
 
+// LÓGICA DE PARTÍCULAS
 const bgCanvas = document.getElementById("bg-particles");
-const bgCtx = bgCanvas.getContext("2d");
+const bgCtx = bgCanvas ? bgCanvas.getContext("2d") : null;
 const cursorCanvas = document.getElementById("cursor-canvas");
-const cCtx = cursorCanvas.getContext("2d");
+const cCtx = cursorCanvas ? cursorCanvas.getContext("2d") : null;
 let particles = [], points = [], mouse = { x: 0, y: 0 }, current = { x: 0, y: 0 };
 
 function initParticles() {
@@ -146,6 +156,7 @@ function initParticles() {
 }
 
 function animateParticles() {
+    if(!bgCtx) return;
     bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
     bgCtx.fillStyle = body.dataset.theme === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)";
     particles.forEach(p => {
@@ -160,6 +171,7 @@ function animateParticles() {
 window.onmousemove = e => { mouse.x = e.clientX; mouse.y = e.clientY; };
 
 function animateCursor() {
+    if(!cCtx) return;
     cCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
     current.x += (mouse.x - current.x) * 0.15;
     current.y += (mouse.y - current.y) * 0.15;

@@ -305,3 +305,39 @@ body {
     cursor: default;
     text-decoration: none;
 }
+
+.visit-button {
+    display: none; /* Se activa por JS */
+    margin-top: 25px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    transition: opacity 0.3s;
+}
+
+/* Color en modo Dark (Blanco) */
+[data-theme="dark"] .visit-button {
+    color: #ffffff !important;
+}
+
+/* Color en modo Light (Negro) */
+[data-theme="light"] .visit-button {
+    color: #000000 !important;
+}
+
+.visit-button:hover {
+    opacity: 0.5;
+}
+
+#project-link {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-top: 15px;
+}
+#project-link.disabled {
+    text-decoration: none;
+    cursor: default;
+}

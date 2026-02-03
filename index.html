@@ -7,6 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Aseguramos que el botón tenga el estilo correcto y no se pierda */
+        .visit-button {
+            display: none; 
+            margin-top: 20px;
+            font-weight: 700;
+            text-decoration: underline;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        [data-theme="dark"] .visit-button { color: #ffffff; }
+        [data-theme="light"] .visit-button { color: #000000; }
+        .visit-button:hover { opacity: 0.6; }
+    </style>
 </head>
 
 <body data-theme="dark">
@@ -24,11 +41,9 @@
             <span class="checkmark"></span> LIGHT
         </label>
 
-        <span class="lang-btn" data-lang="es"
-            style="cursor:pointer; font-size: 0.65rem; margin-right: 1px; margin-top: 10px">ES</span>
+        <span class="lang-btn" data-lang="es" style="cursor:pointer; font-size: 0.65rem; margin-right: 1px; margin-top: 10px">ES</span>
         <span style="font-size: 0.65rem; opacity: 0.5; margin-top: 10px">/</span>
-        <span class="lang-btn active" data-lang="en"
-            style="cursor:pointer; font-size: 0.65rem; margin-left: 1px; margin-top: 10px">EN</span>
+        <span class="lang-btn active" data-lang="en" style="cursor:pointer; font-size: 0.65rem; margin-left: 1px; margin-top: 10px">EN</span>
     </div>
 
     <div class="stage-wrapper">
@@ -49,7 +64,6 @@
             </section>
 
             <div class="panels-container">
-
                 <section class="panel-lateral home-panel active" id="home-panel">
                     <p data-i18n="home_text"></p>
                 </section>
@@ -64,8 +78,7 @@
                     <p>smsebastian@outlook.com</p>
                     <div class="social-links">
                         <a href="https://github.com/Sm-Sebas" target="_blank">GitHub</a> ·
-                        <a href="https://www.linkedin.com/in/sebastián-sánchez-martínez-178b31349/"
-                            target="_blank">LinkedIn</a> ·
+                        <a href="https://www.linkedin.com/in/sebastián-sánchez-martínez-178b31349/" target="_blank">LinkedIn</a> ·
                         <a href="./assets/CV/Sebastian_CV.pdf" download>CV</a>
                     </div>
                 </section>
@@ -73,12 +86,9 @@
                 <section id="project-view" class="project-view">
                     <div class="project-list-side">
                         <ul id="project-list">
-                            <li data-project="p1" class="project-item"><span class="p-num">01.</span> Weather & Activity
-                            </li>
-                            <li data-project="p2" class="project-item"><span class="p-num">02.</span> Archive Atelier
-                            </li>
-                            <li data-project="p3" class="project-item"><span class="p-num">03.</span> Ticketing System
-                            </li>
+                            <li data-project="p1" class="project-item"><span class="p-num">01.</span> Weather & Activity</li>
+                            <li data-project="p2" class="project-item"><span class="p-num">02.</span> Archive Atelier</li>
+                            <li data-project="p3" class="project-item"><span class="p-num">03.</span> Ticketing System</li>
                         </ul>
                     </div>
 
@@ -89,13 +99,8 @@
                         <div class="project-info-text">
                             <h2 id="project-title"></h2>
                             <p id="project-desc"></p>
-                            <p id="project-tech"
-                                style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px;">
-                            </p>
-                            <a id="project-github" href="#" target="_blank"
-                                style="display: none; color: var(--text); text-decoration: none; margin-top: 15px;">
-                                View on GitHub
-                            </a>
+                            <p id="project-tech" style="font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px;"></p>
+                            <a id="project-link" href="#" target="_blank" class="visit-button">Visit Shop</a>
                         </div>
                     </div>
                 </section>
@@ -107,7 +112,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
-        // OBJETO DE TRADUCCIONES
         const translations = {
             es: {
                 subtitle: "Desarrollador Web",
@@ -117,24 +121,19 @@
                 menu_contact: "Contacto",
                 home_text: "Hola, soy Sebastián Sánchez, desarrollador web full-stack apasionado por crear experiencias digitales elegantes y funcionales.<br><br>Me especializo en combinar diseño intuitivo con tecnología eficiente, desarrollando sitios y aplicaciones modernas que aporten valor.",
                 info_text: "<strong>Habilidades y Tecnologías:</strong><br><br>- Frontend: HTML5, CSS3, JavaScript<br>- Backend: PHP, Java<br>- Bases de Datos: SQL, PL/SQL, Oracle Database<br>- Otros: XML, WordPress, VS Code<br>- Diseño: UI, Responsive, SEO<br><br><strong>Fortalezas Personales:</strong><br><br>- Atención al detalle<br>- Resolución de problemas<br>- Aprendizaje constante<br>- Trabajo en equipo<br>- Motivación y proactividad",
-
-                // Textos Proyectos
                 p1_title: "Weather & Activity Planner",
                 p1_desc: "Aplicación meteorológica que recomienda actividades basadas en el clima local mediante el consumo de APIs externas.",
                 p1_tech: "React · OpenWeather API · CSS Modules",
                 p1_link: "https://github.com/Sm-Sebas/weather-app",
-
                 p2_title: "Archive Atelier",
                 p2_desc: "Plataforma de comercio electrónico seleccionada para artistas digitales. Un enfoque minimalista que prioriza el impacto visual a través de un sistema de cuadrículas brutalista y una interfaz de alta costura digital, impulsada por una arquitectura Next.js y Supabase de alto rendimiento",
                 p2_tech: "JavaScript (ES6+) · Next.js · React · Tailwind CSS · Supabase · PostgreSQL · CSS 3D · Vercel · GitHub",
                 p2_link: "https://atelier-shop-inky.vercel.app/",
-
                 p3_title: "Sistema de Tickets Soporte IT",
                 p3_desc: "Plataforma de gestión de incidencias con roles de usuario, base de datos relacional y reportes automatizados.",
                 p3_tech: "Java · PHP · Oracle SQL · PL/SQL",
                 p3_link: "https://github.com/Sm-Sebas/ticketing",
-
-                git_text: "Ver en GitHub"
+                visit_btn: "Visitar Proyecto"
             },
             en: {
                 subtitle: "Web Developer",
@@ -144,36 +143,61 @@
                 menu_contact: "Contact",
                 home_text: "Hello, I'm Sebastián Sánchez, a full-stack web developer passionate about creating elegant and functional digital experiences.<br><br>I specialise in combining intuitive design with efficient technology, developing modern websites and applications that add value.",
                 info_text: "<strong>Skills and Technologies:</strong><br><br>- Frontend: HTML5, CSS3, JavaScript<br>- Backend: PHP, Java<br>- Databases: SQL, PL/SQL, Oracle Database<br>- Others: XML, WordPress, VS Code<br>- Design: UI, Responsive, SEO<br><br><strong>Personal Strengths:</strong><br><br>- Attention to detail<br>- Problem solving<br>- Continuous learning<br>- Teamwork<br>- Motivation and proactivity",
-
-                // Project Texts
                 p1_title: "Weather & Activity Planner",
                 p1_desc: "Weather application that recommends activities based on local climate by consuming external APIs.",
                 p1_tech: "React · OpenWeather API · CSS Modules",
                 p1_link: "https://github.com/Sm-Sebas/weather-app",
-
                 p2_title: "Archive Atelier ",
                 p2_desc: "Curated e-commerce platform for digital artists. A minimalist approach that prioritizes visual impact through a brutalist grid system and a digital haute couture interface, powered by a high-performance Next.js and Supabase architecture.",
                 p2_tech: "JavaScript (ES6+) · Next.js · React · Tailwind CSS · Supabase · PostgreSQL · CSS 3D · Vercel · GitHub",
                 p2_link: "https://atelier-shop-inky.vercel.app/",
-
                 p3_title: "IT Support Ticketing System",
                 p3_desc: "Issue management platform featuring user roles, relational database, and automated reporting.",
                 p3_tech: "Java · PHP · Oracle SQL · PL/SQL",
                 p3_link: "https://github.com/Sm-Sebas/ticketing",
-
-                git_text: "View on GitHub"
+                visit_btn: "Visit Project"
             }
         };
 
-        // Función global de traducción inicial
         function updateTexts(lang) {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang][key]) el.innerHTML = translations[lang][key];
             });
-            // Si hay un proyecto activo, actualizar sus textos también
-            const activeItem = document.querySelector('.project-item.active-item');
-            if (activeItem) activeItem.click();
+        }
+
+        // NUEVA LÓGICA DE PROYECTOS INTEGRADA
+        function setupProjectClicks() {
+            document.querySelectorAll('.project-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const pId = item.dataset.project;
+                    const lang = document.querySelector('.lang-btn.active').dataset.lang;
+                    
+                    // Actualizar textos
+                    document.getElementById("project-title").textContent = translations[lang][`${pId}_title`];
+                    document.getElementById("project-desc").innerHTML = translations[lang][`${pId}_desc`];
+                    document.getElementById("project-tech").textContent = translations[lang][`${pId}_tech`];
+                    
+                    // Actualizar Link
+                    const linkBtn = document.getElementById("project-link");
+                    const url = translations[lang][`${pId}_link`];
+                    
+                    if(url && url !== "#") {
+                        linkBtn.href = url;
+                        linkBtn.style.display = "inline-block";
+                        linkBtn.textContent = translations[lang].visit_btn;
+                    } else {
+                        linkBtn.style.display = "none";
+                    }
+
+                    // Marcar activo visualmente
+                    document.querySelectorAll('.project-item').forEach(li => li.classList.remove('active-item'));
+                    item.classList.add('active-item');
+
+                    // Animación
+                    gsap.fromTo(".project-info-text", {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.4});
+                });
+            });
         }
 
         document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -182,12 +206,17 @@
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 updateTexts(lang);
+                // Si hay un proyecto abierto, actualizar su link al cambiar idioma
+                const active = document.querySelector('.project-item.active-item');
+                if(active) active.click();
             });
         });
 
-        window.addEventListener('DOMContentLoaded', () => updateTexts('en'));
+        window.addEventListener('DOMContentLoaded', () => {
+            updateTexts('en');
+            setupProjectClicks();
+        });
     </script>
     <script src="js/main.js"></script>
 </body>
-
 </html>

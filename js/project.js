@@ -1,22 +1,33 @@
-const projectOverlay = document.querySelector(".project-view");
-const title = document.getElementById("project-title");
-const desc = document.getElementById("project-desc");
-const closeBtn = document.querySelector(".close");
+document.querySelectorAll(".project-item").forEach(item => {
+    item.addEventListener('click', () => {
+        const pId = item.dataset.project; // "p1", "p2", etc.
+        const currentLang = document.querySelector('.lang-btn.active').dataset.lang;
+        
+        // Elementos del DOM
+        const title = document.getElementById("project-title");
+        const desc = document.getElementById("project-desc");
+        const tech = document.getElementById("project-tech");
+        const link = document.getElementById("project-link");
 
-const projectData = {
-  p1:{ title:"Proyecto Uno", desc:"Experiencia web centrada en interacción y diseño limpio." },
-  p2:{ title:"Proyecto Dos", desc:"Sistema UI experimental con animaciones y microinteracciones." },
-  p3:{ title:"Proyecto Tres", desc:"Proyecto enfocado en motion y narrativa visual." }
-};
-
-document.querySelectorAll(".projects li").forEach(item=>{
-  item.onclick = () => {
-    const data = projectData[item.dataset.project];
-    title.textContent = data.title;
-    desc.textContent = data.desc;
-    projectOverlay.classList.add("active");
-    gsap.fromTo(".project-content",{y:40,opacity:0},{y:0,opacity:1,duration:0.6,ease:"power3.out"});
-  };
+        // Rellenar textos desde el objeto 'translations' que está en el HTML
+        if (translations[currentLang][`${pId}_title`]) {
+            title.textContent = translations[currentLang][`${pId}_title`];
+            desc.innerHTML = translations[currentLang][`${pId}_desc`];
+            tech.textContent = translations[currentLang][`${pId}_tech`];
+            
+            // Lógica del Link
+            const url = translations[currentLang][`${pId}_link`];
+            if (url && url !== "#") {
+                link.href = url;
+                link.style.display = "inline-block"; // Forzamos visibilidad
+                link.style.visibility = "visible";   // Por si acaso
+                link.textContent = currentLang === 'es' ? "Visitar Tienda" : "Visit Shop";
+            } else {
+                link.style.display = "none";
+            }
+        }
+        
+        // Animación de entrada
+        gsap.fromTo(".project-info-text", {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.4});
+    });
 });
-
-closeBtn.onclick = ()=> projectOverlay.classList.remove("active");
