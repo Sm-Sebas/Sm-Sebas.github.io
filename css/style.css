@@ -287,3 +287,21 @@ body {
 .square-radio input:checked ~ .checkmark { background: var(--text); }
 .lang-btn { opacity: 0.6; transition: opacity 0.3s; }
 .lang-btn.active { opacity: 1; font-weight: 600; }
+
+#project-github {
+    display: inline-block;
+    padding: 8px 0;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+}
+
+#project-github[href^="http"]:hover {
+    border-bottom: 1px solid var(--text);
+    letter-spacing: 1px;
+}
+
+.disabled {
+    cursor: default;
+    text-decoration: none;
+}

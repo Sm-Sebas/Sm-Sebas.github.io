@@ -6,7 +6,6 @@ const body = document.body;
 const menuButtons = document.querySelectorAll(".menu-btn");
 const projectItems = document.querySelectorAll(".project-item");
 const projectTitle = document.getElementById("project-title");
-
 const projectDesc = document.getElementById("project-desc");
 const projectTech = document.getElementById("project-tech");
 const projectImg = document.getElementById("project-img");
@@ -64,7 +63,7 @@ menuButtons.forEach(btn => {
     };
 });
 
-// SELECCIÓN DE PROYECTO (MODIFICADO PARA "IN PROGRESS")
+// SELECCIÓN DE PROYECTO (CON LÓGICA DE TIENDA TERMINADA)
 projectItems.forEach(item => {
     item.onclick = () => {
         projectItems.forEach(i => i.classList.remove("active-item"));
@@ -76,20 +75,31 @@ projectItems.forEach(item => {
         gsap.to([projectTitle, projectDesc, projectTech, projectGithub, imgContainer], { 
             opacity: 0, y: 10, duration: 0.3, 
             onComplete: () => {
+                // Actualizar imagen
                 if (projectImg) projectImg.src = projectImages[id];
                 
+                // Actualizar textos básicos
                 projectTitle.textContent = translations[currentLang][id + '_title'];
-                projectDesc.textContent = translations[currentLang][id + '_desc'];
+                projectDesc.innerHTML = translations[currentLang][id + '_desc']; // Usamos innerHTML por si tienes <br>
                 projectTech.textContent = translations[currentLang][id + '_tech'];
                 
+                // Lógica del Botón / Link
                 if (projectGithub) {
-                    // 1. Cambiamos el texto según idioma
-                    projectGithub.textContent = currentLang === 'es' ? "[ En proceso ]" : "[ In progress ]";
-                    
-                    // 2. Inhabilitamos el enlace
-                    projectGithub.href = "#";
-                    projectGithub.classList.add("disabled"); // Asegúrate de tener esta clase en el CSS
-                    
+                    if (id === "p2") {
+                        // CASO PROYECTO 2 (TIENDA TERMINADA)
+                        projectGithub.textContent = currentLang === 'es' ? "Visitar Tienda →" : "Visit Shop →";
+                        projectGithub.href = translations[currentLang][id + '_link'];
+                        projectGithub.classList.remove("disabled");
+                        projectGithub.style.opacity = "1";
+                        projectGithub.style.pointerEvents = "auto";
+                    } else {
+                        // CASO OTROS PROYECTOS (EN PROGRESO)
+                        projectGithub.textContent = currentLang === 'es' ? "[ En proceso ]" : "[ In progress ]";
+                        projectGithub.href = "#";
+                        projectGithub.classList.add("disabled");
+                        projectGithub.style.opacity = "0.5";
+                        projectGithub.style.pointerEvents = "none";
+                    }
                     projectGithub.style.display = "inline-block";
                 }
 
@@ -102,7 +112,7 @@ projectItems.forEach(item => {
     };
 });
 
-// --- FUNCIONES DE UTILIDAD ---
+// --- FUNCIONES DE UTILIDAD (Reloj, Partículas, Cursor) ---
 
 function updateClock() {
     const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Europe/Madrid' };
@@ -119,7 +129,6 @@ document.querySelectorAll(".theme-selector input").forEach(input => {
     };
 });
 
-// CANVAS PARTICULAS Y CURSOR
 const bgCanvas = document.getElementById("bg-particles");
 const bgCtx = bgCanvas.getContext("2d");
 const cursorCanvas = document.getElementById("cursor-canvas");
@@ -127,6 +136,7 @@ const cCtx = cursorCanvas.getContext("2d");
 let particles = [], points = [], mouse = { x: 0, y: 0 }, current = { x: 0, y: 0 };
 
 function initParticles() {
+    if(!bgCanvas || !cursorCanvas) return;
     bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight;
     cursorCanvas.width = window.innerWidth; cursorCanvas.height = window.innerHeight;
     particles = Array.from({ length: 80 }, () => ({
