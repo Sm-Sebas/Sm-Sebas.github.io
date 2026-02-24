@@ -91,9 +91,9 @@ projectItems.forEach(item => {
                     if (projectLink) {
                         const url = translations[currentLang][id + '_link'];
                         
-                        if (id === "p2") {
+                        if (id === "p2" || id === "p1") {
                             // PROYECTO 2: ARCHIVE ATELIER
-                            projectLink.textContent = currentLang === 'es' ? "Visitar Tienda →" : "Visit Shop →";
+                            projectLink.textContent = currentLang === 'es' ? "Visitar Proyecto →" : "Visit Project →";
                             projectLink.href = url;
                             projectLink.classList.remove("disabled");
                             projectLink.style.opacity = "1";
